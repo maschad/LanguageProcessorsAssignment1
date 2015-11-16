@@ -44,10 +44,10 @@ public class HPLEvaluator implements HPLVisitor<HPLContext, Painter> {
     @Override
     public Painter visitPIRProgram(PIRProgram program, HPLContext env) 
             throws HPLException {
-        
+    
 	// traverse the program with the given environment
 	// to obtain the resulting painter object.
-        PIRSequence stmts = program.getSeq();
+    PIRSequence stmts = program.getSeq();
 	Painter tmp = stmts.visit(this, env);
 	// don't record null results, so that image on screen will persist
 	if (tmp != Painter.DEFAULT)

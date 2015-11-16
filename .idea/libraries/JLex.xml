@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="JLex">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../java-cup-bin-11b-20151001/JLex" />
+      <root url="jar://$PROJECT_DIR$/../java-cup-bin-11b-20151001/java_cup.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../java-cup-bin-11b-20151001/java_cup_runtime.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/../java-cup-bin-11b-20151001" />
+    </SOURCES>
+  </library>
+</component>

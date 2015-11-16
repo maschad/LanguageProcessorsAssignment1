@@ -105,7 +105,7 @@ non terminal empty;
 
 
 /* Fill in the rest of your non terminal declarations here */
-non terminal PIRFuncDef funcDefn;
+non terminal PIRFunctionDef funcDefn;
 non terminal PIRSubFrameExp subframeExp;
 
 /* Grammar rules */
@@ -142,7 +142,7 @@ PAINT:paint painterExp:e IN frameExp:f {:
 */
 funcDefn ::= DEF_PAINTER:def VAR:name LBRACKET paramList:lst 
 RBRACKET LPAREN pExpList:pList RPAREN COLON stmtList:body END{:
-		RESULT= new PIRFuncDef(name,lst,pList,body);
+		RESULT= new PIRFunctionDef(name,lst,pList,body);
 		:};
 
 frameExp ::= FRAME LPAREN LPAREN arithExp:e1 COMMA arithExp:e2 RPAREN  COMMA LPAREN arithExp:e3 COMMA arithExp:e4 RPAREN COMMA LPAREN arithExp:e5 COMMA arithExp:e6 RPAREN RPAREN{: 
