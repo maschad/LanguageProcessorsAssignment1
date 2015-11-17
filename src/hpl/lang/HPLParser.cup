@@ -137,10 +137,10 @@ PAINT:paint painterExp:e IN frameExp:f {:
    ** You will need to implement function definition **
 */
 funcDefn ::= DEF_PAINTER:def VAR:name LBRACKET paramList:lst 
-RBRACKET LPAREN pExpList:pList RPAREN COLON stmtList:body END{:
+RBRACKET LPAREN paramList:pList RPAREN COLON stmtList:body END{:
 		RESULT= new PIRFunctionDef(name,lst,body,pList);
 		:} | DEF_PAINTER:def VAR:name LBRACKET paramListE:lst 
-RBRACKET LPAREN pExpList:pList RPAREN COLON stmtList:body END{:
+RBRACKET LPAREN paramList:pList RPAREN COLON stmtList:body END{:
 		RESULT= new PIRFunctionDef(name,lst,body,pList);
 		:};
 
@@ -169,27 +169,33 @@ funCall ::= VAR:name LBRACKET aExpList:e RBRACKET LPAREN pExpListE:args RPAREN{:
 				:};
 
 paramListE ::= paramList:lst {: RESULT = lst; :} |
-	       empty {: RESULT = new ArrayList<>(); :} ;
+	       empty {: ArrayList<String> lst = new ArrayList<String>(); 
+	       			RESULT = lst;
+	       		:} ;
 
 paramList ::= paramList:lst COMMA VAR:id {:
 		lst.add(id);
 		RESULT = lst; :} |
 	      VAR:id {:
-		RESULT = new ArrayList<>();
-		RESULT.add(id);
+				ArrayList<String> lst = new ArrayList<String>();
+				lst.add(id);
+				RESULT = lst;
 	      :};
 
 aExpList ::= aExpList:lst COMMA arithExp:e {:
-	          lst.add(e);
-		  RESULT = lst;
-	     :} |
-	     arithExp:e {:
-		  RESULT = new ArrayList<>();
-		  RESULT.add(e);
-	     :};
+	         	lst.add(e);
+	  			RESULT = lst;
+	     	:} |
+	    	 arithExp:e {:
+		  		ArrayList<ASTExp<AIRExp>> lst = new ArrayList<ASTExp<AIRExp>>();
+		  		lst.add(e);
+		  		RESULT = lst;
+	     		:};
 
 aExpListE ::= aExpList:lst {: RESULT = lst; :} |
-	      empty {: RESULT = new ArrayList<>(); :};
+	      empty {: ArrayList<ASTExp<AIRExp>> lst = new ArrayList<ASTExp<AIRExp>>(); 
+	      		RESULT = lst;
+	      	:};
 
 /* 
    ** You will also need separate rules for a list of painter expressions **
@@ -199,12 +205,13 @@ pExpList ::= pExpList:lst COMMA painterExp:e {:
 			lst.add(e);
 			RESULT= lst; 
 		:}| painterExp:e {:
-			RESULT = new ArrayList<>();
-			RESULT.add(e);
+			ArrayList<ASTExp<PIRExp>> lst = new ArrayList<ASTExp<PIRExp>>();
+			lst.add(e);
+			RESULT = lst;
 		:};
 
 pExpListE ::= pExpListE:lst {: RESULT = lst; :} |
-				empty{: RESULT = new ArrayList<>(); :};
+				empty{: RESULT = new ArrayList<ASTExp<PIRExp>>(); :};
 
 arithExp ::= arithExp:e PLUS arithTerm:t {: RESULT = new ASTBinaryExp<AIRExp>("+", e, t); :} |
 	     arithExp:e MINUS arithTerm:t {: RESULT = new ASTBinaryExp<AIRExp>("-", e, t); :} |

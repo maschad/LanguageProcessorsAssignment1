@@ -6,10 +6,10 @@ import hpl.sys.*;
 public class PIRFunctionDef extends PIRStatement{
 	String name;
 	ArrayList<String> params;
-	ArrayList<ASTExp<PIRExp>> painterList;
+	ArrayList<String> painterList;
 	PIRSequence body;
 
-	public PIRFunctionDef(String name, ArrayList<String> ids, PIRSequence body,	ArrayList<ASTExp<PIRExp>> painters){
+	public PIRFunctionDef(String name, ArrayList<String> ids, PIRSequence body,	ArrayList<String> painters){
 		this.name = name;
 		this.params = ids;
 		this.body = body;
@@ -20,16 +20,17 @@ public class PIRFunctionDef extends PIRStatement{
 		return name;
     }
 
-    public ArrayList<String> getParameters() {
+    public ArrayList<String> getArithParams() {
 		return params;
     }
 
-    public PIRSequence getBody() {
-		return body;
+    public ArrayList<String> getPainterParams(){
+    	return painterList;
     }
 
-    public ArrayList<ASTExp<PIRExp>> getPainters(){
-    	return painterList;
+
+    public PIRSequence getBody() {
+		return body;
     }
 
     @Override

@@ -205,4 +205,12 @@ public class HPLEvaluator implements HPLVisitor<HPLContext, Painter> {
 	throw new HPLException("Unknown binary operation applied to painters: "+
 			       exp);
     }
+
+    @Override
+    public Painter visitPIRFuncDefinition(PIRFunctionDef funcDefn, HPLContext state)
+    throws HPLException{
+        HPLFunction fn = new HPLFunction(funcDefn.getName(),funcDefn.getArithParams(),funcDefn.getPainterParams(),funcDefn.getBody(),state);
+        state.putF(funcDefn.getName(),fn);
+        return lastResult;
+    }
 }

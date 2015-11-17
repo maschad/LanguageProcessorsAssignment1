@@ -7,13 +7,16 @@ import java.util.ArrayList;
 public class HPLContextualizer implements HPLContext {
 	private PainterFrame currentFrame;
 	private HPLFunction currentFunction;
-    private HPLEnvironment currentEnv;
+    private HPLEnvironment<Painter> painterEnv;
+    private HPLEnvironment<Double> numericalEnv;
+    private HPLEnvironment<HPLFunction> functionEnv;
+   
 
     //Initialize new Concrete HPLContext
     public HPLContextualizer(HPLEnvironment env, PainterFrame f , HPLFunction func){
         this.currentFrame = f;
         this.currentFunction = func;
-        this.currentEnv = env;
+        this.functionEnv = env;
     }
 
     /**
@@ -25,7 +28,7 @@ public class HPLContextualizer implements HPLContext {
      * one.
      */
     public HPLContext composeFrame(PainterFrame f){
-    	return new HPLContextualizer(this.currentEnv,f,this.currentFunction);
+    	return new HPLContextualizer(this.painterEnv,f,this.currentFunction);
     }
 
     /**
@@ -37,7 +40,7 @@ public class HPLContextualizer implements HPLContext {
      * but leaving all the other components of the context unchanged.
      */
     public HPLContext extendF(ArrayList<String> fParams, ArrayList<HPLFunction> args){
-        return new HPLContextualizer(new HPLEnvironment(this.currentEnv,fParams,args),this.currentFrame,this.currentFunction);
+        return new HPLContextualizer(new HPLEnvironment(this.functionEnv,fParams,args),this.currentFrame,this.currentFunction);
     }
 
     /**
@@ -50,7 +53,7 @@ public class HPLContextualizer implements HPLContext {
      * but leaving all the other components of the context unchanged.
      */
     public HPLContext extendN(ArrayList<String> nParams, ArrayList<Double> vals){
-        return new HPLContextualizer(new HPLEnvironment(vals,nParams),this.currentFrame,this.currentFunction);
+        return new HPLContextualizer(new HPLEnvironment(this.numericalEnv,nParams,vals),this.currentFrame,this.currentFunction);
     }
 
     /**
@@ -61,7 +64,9 @@ public class HPLContextualizer implements HPLContext {
      * @return A newly created context containing the new painter environment,
      * but leaving all the other components of the context unchanged.
      */
-    public HPLContext extendP(ArrayList<String> pParams, ArrayList<Painter> args);
+    public HPLContext extendP(ArrayList<String> pParams, ArrayList<Painter> args){
+        return new HPLContextualizer(new HPLEnvironment(this.painterEnv,pParams,args),this.currentFrame,this.currentFunction);
+    }
 
     /**
      * Lookup a reference to a HPL function.
@@ -71,11 +76,11 @@ public class HPLContextualizer implements HPLContext {
      * context
      */
     public HPLFunction getF(String name) throws HPLException {
-    	if (context.getName() == name){
-    		return context;
-    	}
-    	else{
-    		throw new HPLException("name unbound to a painter in this context");
+    	try{
+            return functionEnv.get(name);
+        }    	
+    	catch(HPLException hple){
+    		throw new HPLException("name unbound to a painter in this context",hple);
     	}
 
     }
@@ -85,7 +90,7 @@ public class HPLContextualizer implements HPLContext {
      * @return The (resultant) frame associated with this context.
      */
     public PainterFrame getFrame(){
-    	return frame;
+    	return currentFrame;
     }
 
     /**
@@ -96,14 +101,21 @@ public class HPLContextualizer implements HPLContext {
      * context
      */
     public Double getN(String name) throws HPLException{
-
+        try{
+            return numericalEnv.get(name);
+        }
+        catch(HPLException hple){
+            throw new HPLException("name unbound to a painter in this context",hple);
+        }
     }
 
     /**
      *
      * @return The numerical environment associated with this context.
      */
-    public HPLEnvironment<Double> getNumEnv();
+    public HPLEnvironment<Double> getNumEnv(){
+        return numericalEnv;
+    }
 
     /**
      * Lookup a reference to a painter
@@ -112,28 +124,41 @@ public class HPLContextualizer implements HPLContext {
      * @throws HPLException if the name is not bound to a painter in this
      * context
      */
-    public Painter getP(String name) throws HPLException;
+    public Painter getP(String name) throws HPLException{
+        try{
+            return painterEnv.get(name);
+        }
+        catch(HPLException hple){
+            throw new HPLException("name unbound to a painter in this context",hple);
+        }
+    }
 
     /**
      * Store a binding for the given name to the given HPL function.
      * @param name The identifier of the binding
      * @param p The HPL function to be associated with the name
      */
-    public void putF(String name, HPLFunction p);
+    public void putF(String name, HPLFunction p){
+        functionEnv.put(name,p);
+    }
 
     /**
      * Store a binding for the given name to the given number.
      * @param name The identifier of the binding
      * @param n The numerical value to be associated with the name
      */
-    public void putN(String name, Double n);
+    public void putN(String name, Double n){
+        numericalEnv.put(name,n);
+    }
 
     /**
      * Store a binding for the given name to the given painter.
      * @param name The identifier of the binding
      * @param p The painter value to be associated with the name
      */
-    public void putP(String name, Painter p);
+    public void putP(String name, Painter p){
+        painterEnv.put(name,p);
+    }
     
     
 }
