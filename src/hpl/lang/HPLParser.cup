@@ -59,9 +59,10 @@ terminal IMG_PAINTER, FRAME, SUBFRAME;
 terminal LET, WAIT;
 
 /* Arithmetic operators */ 
-terminal PLUS, MINUS, TIMES, DIV, MOD;
+terminal PLUS, MINUS, TIMES, DIV, MOD, POW;
 /* Punctuation */
 terminal LPAREN, RPAREN, LBRACKET, RBRACKET, SEMI, COMMA, COLON, IN, END;
+
 
 terminal Integer INTEGER;
 terminal Double FRACTION;
@@ -71,7 +72,6 @@ terminal String STRING;
 
 /* Non terminals */
 non terminal PIRProgram program;
-
 non terminal PIRSequence stmtList;
 non terminal PIRStatement stmt;
 non terminal PIRStatement waitStmt;
@@ -106,7 +106,7 @@ non terminal empty;
 
 /* Fill in the rest of your non terminal declarations here */
 non terminal PIRFunctionDef funcDefn;
-non terminal PIRSubFrameExp subframeExp;
+
 
 /* Grammar rules */
 
@@ -115,10 +115,6 @@ start with program;
 program ::= stmtList:seq {:
 		RESULT = new PIRProgram(seq);
 	    :};
-
-assignment ::= VAR:v ASSIGN arithExp:e {:
-                RESULT = new ExpAssignment(v,e);
-            :};
 
 stmtList ::= stmtList:seq stmt:s {:
 		  seq.addStatement(s);
@@ -131,10 +127,10 @@ stmt ::=   VAR:id ASSIGN painterExp:e {: RESULT = new PIRAssignment(id, e); :} |
            waitStmt: s {: RESULT = s; :} ;
 
 paintStmt ::= PAINT:paint painterExp:e {:
-	RESULT =  new PIRPaintStmt.add(p,e);
+	RESULT =  new PIRPaintStmt(e);
 :} |
 PAINT:paint painterExp:e IN frameExp:f {: 
-		RESULT = new  PIRPaintStmt.add(p,e,f); 
+		RESULT = new  PIRPaintStmt(e,f); 
 		:};  /* Finish this */
 
 /* 
@@ -142,16 +138,17 @@ PAINT:paint painterExp:e IN frameExp:f {:
 */
 funcDefn ::= DEF_PAINTER:def VAR:name LBRACKET paramList:lst 
 RBRACKET LPAREN pExpList:pList RPAREN COLON stmtList:body END{:
-		RESULT= new PIRFunctionDef(name,lst,pList,body);
+		RESULT= new PIRFunctionDef(name,lst,body,pList);
+		:} | DEF_PAINTER:def VAR:name LBRACKET paramListE:lst 
+RBRACKET LPAREN pExpList:pList RPAREN COLON stmtList:body END{:
+		RESULT= new PIRFunctionDef(name,lst,body,pList);
 		:};
 
 frameExp ::= FRAME LPAREN LPAREN arithExp:e1 COMMA arithExp:e2 RPAREN  COMMA LPAREN arithExp:e3 COMMA arithExp:e4 RPAREN COMMA LPAREN arithExp:e5 COMMA arithExp:e6 RPAREN RPAREN{: 
 	        RESULT = new PIRFrameExp(e1,e2,e3,e4,e5,e6); 
-		:};  /* Fix this */
-
-subframeExp ::= SUBFRAME LPAREN LPAREN arithExp:e1 COMMA arithExp:e2 RPAREN COMMA arithExp:e3 COMMA arithExp:e4 RPAREN{:
-			RESULT = new PIRSubFrameExp(e1,e2,e3,e4);
-	:};
+		:} | SUBFRAME LPAREN LPAREN arithExp:e1 COMMA arithExp:e2 RPAREN COMMA arithExp:e3 COMMA arithExp:e4 RPAREN{:
+			RESULT = new PIRFrameExp(e1,e2,e3,new AIRExpInt(0), new AIRExpInt(0), e4); 
+		:};
 
 waitStmt ::= WAIT arithExp:t {: RESULT = new PIRWaitStmt(t); :};
 
@@ -167,8 +164,8 @@ primitiveExp ::= IMG_PAINTER LPAREN STRING:file RPAREN {:
 /*
 	// Implement funCall production rule(s)
 */
-funCall ::= VAR:fn LPAREN aExpList:args RPAREN{:
-					RESULT = new PIRFunCall(fn,args);
+funCall ::= VAR:name LBRACKET aExpList:e RBRACKET LPAREN pExpListE:args RPAREN{:
+					RESULT = new PIRFunCall(name,e,args);
 				:};
 
 paramListE ::= paramList:lst {: RESULT = lst; :} |
@@ -201,8 +198,7 @@ aExpListE ::= aExpList:lst {: RESULT = lst; :} |
 pExpList ::= pExpList:lst COMMA painterExp:e {:
 			lst.add(e);
 			RESULT= lst; 
-		:}; |
-		painterExp:e{:
+		:}| painterExp:e {:
 			RESULT = new ArrayList<>();
 			RESULT.add(e);
 		:};

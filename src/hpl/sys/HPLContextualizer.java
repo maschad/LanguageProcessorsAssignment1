@@ -1,14 +1,20 @@
-package src.hpl.sys;
+package hpl.sys;
+
 import hpl.values.HPLFunction;
 import hpl.values.Painter;
 import java.util.ArrayList;
 
 public class HPLContextualizer implements HPLContext {
-	private PainterFrame frame;
-	private HPLFunction function;
-	private HPLContext context;
-	private Painter painter;
+	private PainterFrame currentFrame;
+	private HPLFunction currentFunction;
+    private HPLEnvironment currentEnv;
 
+    //Initialize new Concrete HPLContext
+    public HPLContextualizer(HPLEnvironment env, PainterFrame f , HPLFunction func){
+        this.currentFrame = f;
+        this.currentFunction = func;
+        this.currentEnv = env;
+    }
 
     /**
      * Resolve a frame relative to the current frame (coordinate system), and
@@ -19,8 +25,7 @@ public class HPLContextualizer implements HPLContext {
      * one.
      */
     public HPLContext composeFrame(PainterFrame f){
-    	this.frame = f;
-    	return context;
+    	return new HPLContextualizer(this.currentEnv,f,this.currentFunction);
     }
 
     /**
@@ -32,8 +37,7 @@ public class HPLContextualizer implements HPLContext {
      * but leaving all the other components of the context unchanged.
      */
     public HPLContext extendF(ArrayList<String> fParams, ArrayList<HPLFunction> args){
-    	
-
+        return new HPLContextualizer(new HPLEnvironment(this.currentEnv,fParams,args),this.currentFrame,this.currentFunction);
     }
 
     /**
@@ -45,7 +49,9 @@ public class HPLContextualizer implements HPLContext {
      * @return A newly created context containing the new numerical environment,
      * but leaving all the other components of the context unchanged.
      */
-    public HPLContext extendN(ArrayList<String> nParams, ArrayList<Double> vals);
+    public HPLContext extendN(ArrayList<String> nParams, ArrayList<Double> vals){
+        return new HPLContextualizer(new HPLEnvironment(vals,nParams),this.currentFrame,this.currentFunction);
+    }
 
     /**
      * Create a new context in which the painter environment is extended with
@@ -65,7 +71,7 @@ public class HPLContextualizer implements HPLContext {
      * context
      */
     public HPLFunction getF(String name) throws HPLException {
-    	if context.getName() == name{
+    	if (context.getName() == name){
     		return context;
     	}
     	else{

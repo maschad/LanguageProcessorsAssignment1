@@ -105,13 +105,13 @@ alphanum = ({alpha}|{num})
 <YYINITIAL>    "*" { return new Symbol(sym.TIMES); }
 <YYINITIAL>    "/" { return new Symbol(sym.DIV); }
 <YYINITIAL>    "%" { return new Symbol(sym.MOD); }
-<YYINITIAL>	   "^" {return new Symbol(sym.POW);}
+<YYINITIAL>	   "^" { return new Symbol(sym.POW); }
 
 <YYINITIAL>	   "(" {return new Symbol(sym.LPAREN);}
 <YYINITIAL>	   ")" {return new Symbol(sym.RPAREN);}
 <YYINITIAL>    [0-9]+ {
 	       // Numerical constants
-	       return new Symbol(sym.NUM,
+	       return new Symbol(sym.INTEGER,
 				 new Integer(yytext()));
 	       }
 

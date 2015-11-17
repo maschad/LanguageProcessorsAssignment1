@@ -560,13 +560,13 @@ public class HPLLexer implements java_cup.runtime.Scanner {
 					case -22:
 						break;
 					case 22:
-						{return new Symbol(sym.POW);}
+						{ return new Symbol(sym.POW); }
 					case -23:
 						break;
 					case 23:
 						{
 	       // Numerical constants
-	       return new Symbol(sym.NUM,
+	       return new Symbol(sym.INTEGER,
 				 new Integer(yytext()));
 	       }
 					case -24:
@@ -799,7 +799,7 @@ public class HPLLexer implements java_cup.runtime.Scanner {
 					case 81:
 						{
 	       // Numerical constants
-	       return new Symbol(sym.NUM,
+	       return new Symbol(sym.INTEGER,
 				 new Integer(yytext()));
 	       }
 					case -64:

@@ -21,25 +21,30 @@ public class PIRFunctionDef extends PIRStatement{
     }
 
     public ArrayList<String> getParameters() {
-		return parameters;
+		return params;
     }
 
     public PIRSequence getBody() {
 		return body;
     }
 
-    public <S, T> T visit(Visitor<S, T> v, S arg) throws Exception {
-		return v.visitPIRFuncDefinition(this, arg);
+    public ArrayList<ASTExp<PIRExp>> getPainters(){
+    	return painterList;
+    }
+
+    @Override
+    public <S, T> T visit(HPLVisitor<S, T> v, S state) throws HPLException {
+		return v.visitPIRFuncDefinition(this, state);
     }
 
     public String toString() {
 	String ids;
-	if (parameters.isEmpty())
+	if (params.isEmpty())
 	    ids = "";
 	else {
-	    ids = parameters.get(0);
-	    for (int i = 1; i < parameters.size(); i++) {
-		String id = parameters.get(i);
+	    ids = params.get(0);
+	    for (int i = 1; i < params.size(); i++) {
+		String id = params.get(i);
 		ids += ", " + id;
 	    }
 	}

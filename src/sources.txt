@@ -11,10 +11,9 @@
 ./hpl/lang/ASTVisitor.java
 ./hpl/lang/BinaryOp.java
 ./hpl/lang/BinOpArith.java
-./hpl/lang/Environment.java
-./hpl/lang/FunctionEnvironment.java
 ./hpl/lang/HPLEvaluator.java
 ./hpl/lang/HPLLexer.java
+./hpl/lang/HPLParser.java
 ./hpl/lang/HPLVisitor.java
 ./hpl/lang/PIRAssignment.java
 ./hpl/lang/PIRExp.java
@@ -26,8 +25,8 @@
 ./hpl/lang/PIRProgram.java
 ./hpl/lang/PIRSequence.java
 ./hpl/lang/PIRStatement.java
-./hpl/lang/PIRSubFrameExp.java
 ./hpl/lang/PIRWaitStmt.java
+./hpl/lang/sym.java
 ./hpl/lang/UnaryOp.java
 ./hpl/lang/UnOpArith.java
 ./hpl/sys/HPLContext.java

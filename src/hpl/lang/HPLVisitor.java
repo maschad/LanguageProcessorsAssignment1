@@ -45,4 +45,6 @@ public interface HPLVisitor<S, T> extends ASTVisitor<PIRExp, S, T> {
     
     public T visitPIRFunCall(PIRFunCall funCall, S state) throws HPLException;
 
+    public T visitPIRFuncDefinition(PIRFunctionDef funcDefn , S state) throws HPLException;
+
 }
