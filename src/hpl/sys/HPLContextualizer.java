@@ -5,6 +5,8 @@ import hpl.values.Painter;
 import java.util.ArrayList;
 
 public class HPLContextualizer implements HPLContext {
+    private Painter painter;
+    private Screen screen;
 	private PainterFrame currentFrame;
 	private HPLFunction currentFunction;
     private HPLEnvironment<Painter> painterEnv;
@@ -19,6 +21,14 @@ public class HPLContextualizer implements HPLContext {
         this.functionEnv = env;
     }
 
+    //Initialize new Concrete HPLContext
+    public HPLContextualizer(HPLEnvironment env, PainterFrame f , Painter p, Screen s){
+        this.currentFrame = f;
+        this.painter = p;
+        this.functionEnv = env;
+        this.screen = s;
+    }
+
     /**
      * Resolve a frame relative to the current frame (coordinate system), and
      * make the result be the new current frame in a newly created context.
@@ -28,7 +38,8 @@ public class HPLContextualizer implements HPLContext {
      * one.
      */
     public HPLContext composeFrame(PainterFrame f){
-    	return new HPLContextualizer(this.painterEnv,f,this.currentFunction);
+        PainterFrame frame = currentFrame.subFrame(f);
+    	return new HPLContextualizer(this.painterEnv,frame,this.currentFunction);
     }
 
     /**

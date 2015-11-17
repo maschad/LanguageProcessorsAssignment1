@@ -116,11 +116,12 @@ public class HPLEvaluator implements HPLVisitor<HPLContext, Painter> {
      * expressions.
      */
     public HPLContext mkInitialContext() {
-	throw new UnsupportedOperationException("Implement this to return a new global context");
+        return new HPLContextualizer(new HPLEnvironment(),screenFrame,lastResult,screen);
     }
 
     // *** Implement a method for function definition (according to your
     //     modifications to HPLVisitor interface)
+
 
     /**
      * Evaluate a function call.
@@ -135,17 +136,28 @@ public class HPLEvaluator implements HPLVisitor<HPLContext, Painter> {
         String funName = funCall.getFunName();
         ArrayList<ASTExp<AIRExp>> nArgExps = funCall.getNumericalArgExps();
         ArrayList<ASTExp<PIRExp>> pArgExps = funCall.getPainterArgExps();
-	// ** Incomplete implementation **
+        HPLFunction function = context.getF(funName);
+
+        ArrayList<String> painterParams = function.getPainterParams();
+        ArrayList<String> arithParams = function.getNumericalParams();
         // evaluate the argument parameters ...
+        ArrayList<Painter> painters = new ArrayList<Painter>();
+        ArrayList<Double> vals = new ArrayList<Double>();
+        for(ASTExp<PIRExp> p : pArgExps){
+             painters.add(p.visit(this,context));
+        }
+        for(ASTExp<AIRExp> d: nArgExps){
+            vals.add(d.visit(arithEval,context.getNumEnv()));
+        }
         
         // extend the closing environment with bindings for painter parameters
-;
+        HPLContext newContext = context.extendP(painterParams,painters);
         // also extend with bindings for numerical parameters
-
+        newContext = context.extendN(arithParams,vals);
         // and we extend with empty function frame to keep local functions local
-        
+        newContext = context.extendF(new ArrayList<String>(),new ArrayList<HPLFunction>());
         // now return a painter that will execute the body when rendered.
-        return new CompoundPainter(this, null, null); // (** fix this **)
+        return new CompoundPainter(this,function.getBody(),newContext); // (** fix this **)
     }
 
     /* ----------------- End of Section for Problem 5 ----------------- */
