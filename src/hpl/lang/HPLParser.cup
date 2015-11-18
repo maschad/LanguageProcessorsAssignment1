@@ -169,33 +169,27 @@ funCall ::= VAR:name LBRACKET aExpList:e RBRACKET LPAREN pExpListE:args RPAREN{:
 				:};
 
 paramListE ::= paramList:lst {: RESULT = lst; :} |
-	       empty {: ArrayList<String> lst = new ArrayList<String>(); 
-	       			RESULT = lst;
-	       		:} ;
+	       empty {: RESULT = new ArrayList<>();:};
 
 paramList ::= paramList:lst COMMA VAR:id {:
 		lst.add(id);
 		RESULT = lst; :} |
 	      VAR:id {:
-				ArrayList<String> lst = new ArrayList<String>();
-				lst.add(id);
-				RESULT = lst;
-	      :};
+				RESULT = new ArrayList<>();
+				RESULT.add(id);
+			:};
 
 aExpList ::= aExpList:lst COMMA arithExp:e {:
 	         	lst.add(e);
 	  			RESULT = lst;
 	     	:} |
 	    	 arithExp:e {:
-		  		ArrayList<ASTExp<AIRExp>> lst = new ArrayList<ASTExp<AIRExp>>();
-		  		lst.add(e);
-		  		RESULT = lst;
+		  		RESULT = new ArrayList<>();
+		  		RESULT.add(e);
 	     		:};
 
 aExpListE ::= aExpList:lst {: RESULT = lst; :} |
-	      empty {: ArrayList<ASTExp<AIRExp>> lst = new ArrayList<ASTExp<AIRExp>>(); 
-	      		RESULT = lst;
-	      	:};
+	      empty {: RESULT = new ArrayList<>();:};
 
 /* 
    ** You will also need separate rules for a list of painter expressions **
@@ -205,13 +199,12 @@ pExpList ::= pExpList:lst COMMA painterExp:e {:
 			lst.add(e);
 			RESULT= lst; 
 		:}| painterExp:e {:
-			ArrayList<ASTExp<PIRExp>> lst = new ArrayList<ASTExp<PIRExp>>();
-			lst.add(e);
-			RESULT = lst;
+			RESULT =  new ArrayList<>();
+			RESULT.add(e);
 		:};
 
 pExpListE ::= pExpListE:lst {: RESULT = lst; :} |
-				empty{: RESULT = new ArrayList<ASTExp<PIRExp>>(); :};
+				empty{: RESULT = new ArrayList<>(); :};
 
 arithExp ::= arithExp:e PLUS arithTerm:t {: RESULT = new ASTBinaryExp<AIRExp>("+", e, t); :} |
 	     arithExp:e MINUS arithTerm:t {: RESULT = new ASTBinaryExp<AIRExp>("-", e, t); :} |

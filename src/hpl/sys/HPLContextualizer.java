@@ -5,28 +5,19 @@ import hpl.values.Painter;
 import java.util.ArrayList;
 
 public class HPLContextualizer implements HPLContext {
-    private Painter painter;
-    private Screen screen;
+  
 	private PainterFrame currentFrame;
-	private HPLFunction currentFunction;
     private HPLEnvironment<Painter> painterEnv;
     private HPLEnvironment<Double> numericalEnv;
     private HPLEnvironment<HPLFunction> functionEnv;
    
 
     //Initialize new Concrete HPLContext
-    public HPLContextualizer(HPLEnvironment env, PainterFrame f , HPLFunction func){
-        this.currentFrame = f;
-        this.currentFunction = func;
-        this.functionEnv = env;
-    }
-
-    //Initialize new Concrete HPLContext
-    public HPLContextualizer(HPLEnvironment env, PainterFrame f , Painter p, Screen s){
-        this.currentFrame = f;
-        this.painter = p;
-        this.functionEnv = env;
-        this.screen = s;
+    public HPLContextualizer(HPLEnvironment<Painter> pEnv, PainterFrame f , HPLEnvironment<HPLFunction> fEnv, HPLEnvironment<Double> numEnv){
+       this.currentFrame = f;
+       this.painterEnv = pEnv;
+       this.numericalEnv = numEnv;
+       this.functionEnv = fEnv;
     }
 
     /**
@@ -39,7 +30,7 @@ public class HPLContextualizer implements HPLContext {
      */
     public HPLContext composeFrame(PainterFrame f){
         PainterFrame frame = currentFrame.subFrame(f);
-    	return new HPLContextualizer(this.painterEnv,frame,this.currentFunction);
+    	return new HPLContextualizer(this.painterEnv,frame,this.functionEnv,this.numericalEnv);
     }
 
     /**
@@ -51,7 +42,7 @@ public class HPLContextualizer implements HPLContext {
      * but leaving all the other components of the context unchanged.
      */
     public HPLContext extendF(ArrayList<String> fParams, ArrayList<HPLFunction> args){
-        return new HPLContextualizer(new HPLEnvironment(this.functionEnv,fParams,args),this.currentFrame,this.currentFunction);
+        return new HPLContextualizer(this.painterEnv,currentFrame,new HPLEnvironment(this.functionEnv,fParams,args),this.numericalEnv);
     }
 
     /**
@@ -64,7 +55,7 @@ public class HPLContextualizer implements HPLContext {
      * but leaving all the other components of the context unchanged.
      */
     public HPLContext extendN(ArrayList<String> nParams, ArrayList<Double> vals){
-        return new HPLContextualizer(new HPLEnvironment(this.numericalEnv,nParams,vals),this.currentFrame,this.currentFunction);
+        return new HPLContextualizer(this.painterEnv,currentFrame,this.functionEnv,new HPLEnvironment(this.numericalEnv,nParams,vals));
     }
 
     /**
@@ -76,8 +67,8 @@ public class HPLContextualizer implements HPLContext {
      * but leaving all the other components of the context unchanged.
      */
     public HPLContext extendP(ArrayList<String> pParams, ArrayList<Painter> args){
-        return new HPLContextualizer(new HPLEnvironment(this.painterEnv,pParams,args),this.currentFrame,this.currentFunction);
-    }
+        return new HPLContextualizer(new HPLEnvironment(this.painterEnv,pParams,args),currentFrame,this.functionEnv,this.numericalEnv);
+     }
 
     /**
      * Lookup a reference to a HPL function.

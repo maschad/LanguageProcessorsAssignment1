@@ -630,9 +630,7 @@ class CUP$HPLParser$actions {
           case 20: // paramListE ::= empty 
             {
               ArrayList<String> RESULT =null;
-		 ArrayList<String> lst = new ArrayList<String>(); 
-	       			RESULT = lst;
-	       		
+		 RESULT = new ArrayList<>();
               CUP$HPLParser$result = parser.getSymbolFactory().newSymbol("paramListE",18, ((java_cup.runtime.Symbol)CUP$HPLParser$stack.peek()), ((java_cup.runtime.Symbol)CUP$HPLParser$stack.peek()), RESULT);
             }
           return CUP$HPLParser$result;
@@ -662,10 +660,9 @@ class CUP$HPLParser$actions {
 		int idright = ((java_cup.runtime.Symbol)CUP$HPLParser$stack.peek()).right;
 		String id = (String)((java_cup.runtime.Symbol) CUP$HPLParser$stack.peek()).value;
 		
-				ArrayList<String> lst = new ArrayList<String>();
-				lst.add(id);
-				RESULT = lst;
-	      
+				RESULT = new ArrayList<>();
+				RESULT.add(id);
+			
               CUP$HPLParser$result = parser.getSymbolFactory().newSymbol("paramList",17, ((java_cup.runtime.Symbol)CUP$HPLParser$stack.peek()), ((java_cup.runtime.Symbol)CUP$HPLParser$stack.peek()), RESULT);
             }
           return CUP$HPLParser$result;
@@ -696,9 +693,8 @@ class CUP$HPLParser$actions {
 		int eright = ((java_cup.runtime.Symbol)CUP$HPLParser$stack.peek()).right;
 		ASTExp<AIRExp> e = (ASTExp<AIRExp>)((java_cup.runtime.Symbol) CUP$HPLParser$stack.peek()).value;
 		
-		  		ArrayList<ASTExp<AIRExp>> lst = new ArrayList<ASTExp<AIRExp>>();
-		  		lst.add(e);
-		  		RESULT = lst;
+		  		RESULT = new ArrayList<>();
+		  		RESULT.add(e);
 	     		
               CUP$HPLParser$result = parser.getSymbolFactory().newSymbol("aExpList",13, ((java_cup.runtime.Symbol)CUP$HPLParser$stack.peek()), ((java_cup.runtime.Symbol)CUP$HPLParser$stack.peek()), RESULT);
             }
@@ -720,9 +716,7 @@ class CUP$HPLParser$actions {
           case 26: // aExpListE ::= empty 
             {
               ArrayList<ASTExp<AIRExp>> RESULT =null;
-		 ArrayList<ASTExp<AIRExp>> lst = new ArrayList<ASTExp<AIRExp>>(); 
-	      		RESULT = lst;
-	      	
+		 RESULT = new ArrayList<>();
               CUP$HPLParser$result = parser.getSymbolFactory().newSymbol("aExpListE",14, ((java_cup.runtime.Symbol)CUP$HPLParser$stack.peek()), ((java_cup.runtime.Symbol)CUP$HPLParser$stack.peek()), RESULT);
             }
           return CUP$HPLParser$result;
@@ -753,9 +747,8 @@ class CUP$HPLParser$actions {
 		int eright = ((java_cup.runtime.Symbol)CUP$HPLParser$stack.peek()).right;
 		ASTExp<PIRExp> e = (ASTExp<PIRExp>)((java_cup.runtime.Symbol) CUP$HPLParser$stack.peek()).value;
 		
-			ArrayList<ASTExp<PIRExp>> lst = new ArrayList<ASTExp<PIRExp>>();
-			lst.add(e);
-			RESULT = lst;
+			RESULT =  new ArrayList<>();
+			RESULT.add(e);
 		
               CUP$HPLParser$result = parser.getSymbolFactory().newSymbol("pExpList",15, ((java_cup.runtime.Symbol)CUP$HPLParser$stack.peek()), ((java_cup.runtime.Symbol)CUP$HPLParser$stack.peek()), RESULT);
             }
@@ -777,7 +770,7 @@ class CUP$HPLParser$actions {
           case 30: // pExpListE ::= empty 
             {
               ArrayList<ASTExp<PIRExp>> RESULT =null;
-		 RESULT = new ArrayList<ASTExp<PIRExp>>(); 
+		 RESULT = new ArrayList<>(); 
               CUP$HPLParser$result = parser.getSymbolFactory().newSymbol("pExpListE",16, ((java_cup.runtime.Symbol)CUP$HPLParser$stack.peek()), ((java_cup.runtime.Symbol)CUP$HPLParser$stack.peek()), RESULT);
             }
           return CUP$HPLParser$result;

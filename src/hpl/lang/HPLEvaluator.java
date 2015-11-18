@@ -116,7 +116,7 @@ public class HPLEvaluator implements HPLVisitor<HPLContext, Painter> {
      * expressions.
      */
     public HPLContext mkInitialContext() {
-        return new HPLContextualizer(new HPLEnvironment(),screenFrame,lastResult,screen);
+        return new HPLContextualizer(new HPLEnvironment<Painter>(), screenFrame, new HPLEnvironment<HPLFunction>(),new HPLEnvironment<Double>());
     }
 
     // *** Implement a method for function definition (according to your
