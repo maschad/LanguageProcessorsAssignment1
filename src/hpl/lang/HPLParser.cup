@@ -124,22 +124,20 @@ stmtList ::= stmtList:seq stmt:s {:
 
 stmt ::=   VAR:id ASSIGN painterExp:e {: RESULT = new PIRAssignment(id, e); :} |
            paintStmt: s {: RESULT = s; :} |
-           waitStmt: s {: RESULT = s; :} ;
+           waitStmt: s {: RESULT = s; :} | 
+           funcDefn: s {: RESULT = s; :};
 
 paintStmt ::= PAINT:paint painterExp:e {:
 	RESULT =  new PIRPaintStmt(e);
 :} |
 PAINT:paint painterExp:e IN frameExp:f {: 
-		RESULT = new  PIRPaintStmt(e,f); 
-		:};  /* Finish this */
+		RESULT = new  PIRPaintStmt(e,f);:};
+            /* Finish this */
 
 /* 
    ** You will need to implement function definition **
 */
-funcDefn ::= DEF_PAINTER:def VAR:name LBRACKET paramList:lst 
-RBRACKET LPAREN paramList:pList RPAREN COLON stmtList:body END{:
-		RESULT= new PIRFunctionDef(name,lst,body,pList);
-		:} | DEF_PAINTER:def VAR:name LBRACKET paramListE:lst 
+funcDefn ::= DEF_PAINTER:def VAR:name LBRACKET paramListE:lst 
 RBRACKET LPAREN paramList:pList RPAREN COLON stmtList:body END{:
 		RESULT= new PIRFunctionDef(name,lst,body,pList);
 		:};
@@ -154,8 +152,8 @@ waitStmt ::= WAIT arithExp:t {: RESULT = new PIRWaitStmt(t); :};
 
 painterExp ::=  primitiveExp: primExp {: RESULT = primExp; :} |
 	        VAR:v {: RESULT = new ASTVar<PIRExp>(v); :} |
-	        LPAREN painterExp:e RPAREN {: RESULT = e; :}
-	        ; 
+	        LPAREN painterExp:e RPAREN {: RESULT = e; :} | 
+	        funCall:s {: RESULT = s; :}; 
 
 primitiveExp ::= IMG_PAINTER LPAREN STRING:file RPAREN {: 
                          RESULT = new PIRImagePainter(file); 
@@ -164,7 +162,7 @@ primitiveExp ::= IMG_PAINTER LPAREN STRING:file RPAREN {:
 /*
 	// Implement funCall production rule(s)
 */
-funCall ::= VAR:name LBRACKET aExpList:e RBRACKET LPAREN pExpListE:args RPAREN{:
+funCall ::= VAR:name LBRACKET aExpListE:e RBRACKET LPAREN pExpList:args RPAREN{:
 					RESULT = new PIRFunCall(name,e,args);
 				:};
 
