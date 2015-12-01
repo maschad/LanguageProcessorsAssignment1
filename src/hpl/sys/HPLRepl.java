@@ -11,7 +11,6 @@ public class HPLRepl {
     static JFrame display;	// window for display area
     static HPLEvaluator interp;
     static HPLContext globalEnv;
-
     //static Screen screen;	// display area
     //static PainterFrame frame;	// top level frame
     static Painter lastResult;	// painter to be drawn

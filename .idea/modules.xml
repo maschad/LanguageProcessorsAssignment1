@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/hpl-eval-pset.iml" filepath="$PROJECT_DIR$/.idea/hpl-eval-pset.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hpl-eval-pset.iml" filepath="$PROJECT_DIR$/hpl-eval-pset.iml" />
     </modules>
   </component>
 </project>

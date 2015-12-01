@@ -1,3 +1,9 @@
+./hpl/comp/CompilerResult.java
+./hpl/comp/HPLCompiler.java
+./hpl/comp/SVGContext.java
+./hpl/comp/SVGDemo.java
+./hpl/comp/SVGDoc.java
+./hpl/comp/SVGNode.java
 ./hpl/lang/AIRExp.java
 ./hpl/lang/AIRExpFrac.java
 ./hpl/lang/AIRExpInt.java
@@ -14,6 +20,7 @@
 ./hpl/lang/HPLEvaluator.java
 ./hpl/lang/HPLLexer.java
 ./hpl/lang/HPLParser.java
+./hpl/lang/HPLToSVG.java
 ./hpl/lang/HPLVisitor.java
 ./hpl/lang/PIRAssignment.java
 ./hpl/lang/PIRExp.java
@@ -29,6 +36,7 @@
 ./hpl/lang/sym.java
 ./hpl/lang/UnaryOp.java
 ./hpl/lang/UnOpArith.java
+./hpl/sys/HPLComp.java
 ./hpl/sys/HPLContext.java
 ./hpl/sys/HPLContextualizer.java
 ./hpl/sys/HPLEnvironment.java

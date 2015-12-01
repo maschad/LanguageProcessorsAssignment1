@@ -71,14 +71,14 @@
 
     -->
     <target depends="-pre-pre-compile" name="lex">
-        <exec dir="/usr/bin" executable="jflex">
+        <exec dir="/Users/carlos/Desktop/hpl-eval-pset/src/JLex" executable="jlex">
             <arg file="${src.dir}/hpl/lang/HPLLexer"/>
         </exec>
     </target>
     
     <taskdef name="cup"
              classname="java_cup.anttask.CUPTask"
-             classpath="/usr/share/java/cup.jar"
+             classpath="/Users/carlos/Desktop/hpl-eval-pset/src/java_cup.jar"
     />
     <target depends="lex" name="cup">
         <cup srcfile="${basedir}/${src.dir}/hpl/lang/HPLParser.cup"

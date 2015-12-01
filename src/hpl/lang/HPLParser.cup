@@ -152,7 +152,7 @@ waitStmt ::= WAIT arithExp:t {: RESULT = new PIRWaitStmt(t); :};
 
 painterExp ::=  primitiveExp: primExp {: RESULT = primExp; :} |
 	        VAR:v {: RESULT = new ASTVar<PIRExp>(v); :} |
-	        LPAREN painterExp:e RPAREN {: RESULT = e; :} | 
+	        LPAREN painterExp:e RPAREN {: RESULT = e; :} |
 	        funCall:s {: RESULT = s; :}; 
 
 primitiveExp ::= IMG_PAINTER LPAREN STRING:file RPAREN {: 
